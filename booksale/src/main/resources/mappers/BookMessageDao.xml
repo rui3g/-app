@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.tjrac.booksale.dao.BookMessageDao">
+
+    <resultMap id="selectSixInfo" type="cn.edu.tjrac.booksale.vo.BookMessageVo">
+        <id column="bookID" property="bookID"/>
+    </resultMap>
+    <select id="Sixinfo" parameterType="cn.edu.tjrac.booksale.vo.BookMessageVo" resultMap="selectSixInfo">
+        select * from book_message where saleStatus=0  ORDER BY RAND() LIMIT 6
+    </select>
+    <select id="selectSaleinfo" parameterType="cn.edu.tjrac.booksale.vo.BookMessageVo" resultMap="selectSixInfo">
+        select * from book_message where saleStatus=#{saleStatus}
+    </select>
+    <select id="selectSortinfo" parameterType="cn.edu.tjrac.booksale.vo.BookMessageVo" resultMap="selectSixInfo">
+        select * from book_message where bookSort=#{bookSort}
+    </select>
+    <select id="selectInfo" parameterType="cn.edu.tjrac.booksale.vo.BookMessageVo" resultMap="selectSixInfo">
+        select * from book_message where bookSort=#{bookSort} and saleStatus=#{saleStatus}
+    </select>
+    <select id="selectAllInfo" parameterType="cn.edu.tjrac.booksale.vo.BookMessageVo" resultMap="selectSixInfo">
+        select * from book_message
+    </select>
+    <select id="selectone" parameterType="cn.edu.tjrac.booksale.vo.BookMessageVo" resultMap="selectSixInfo">
+        select * from book_message where bookName=#{bookName}
+    </select>
+</mapper>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.tjrac.booksale.dao.ShopInfoDao">
+    <resultMap id="selectbookinfo" type="cn.edu.tjrac.booksale.vo.ShopInfoVo">
+        <id column="bookID" property="bookID"></id>
+    </resultMap>
+    <select id="selectEvaluate" parameterType="int" resultMap="selectbookinfo">
+        select * from book_info where bookID=#{bookID}
+    </select>
+
+</mapper>

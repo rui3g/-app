@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.tjrac.booksale.dao.ShoppingCartDao">
+
+    <resultMap id="shoppingCart" type="cn.edu.tjrac.booksale.vo.ShoppingCartVo">
+        <id column="cartID" property="cartID"></id>
+    </resultMap>
+<select id="selectCartinfo" parameterType="Long" resultMap="shoppingCart">
+    select * from shopping_cart where userID=#{userID}
+</select>
+    <resultMap id="CartID" type="cn.edu.tjrac.booksale.vo.CartIDVo">
+    <id column="cartID" property="cartID" javaType="java.lang.Integer"></id>
+    </resultMap>
+    <select id="selectSumPrice" parameterType="cn.edu.tjrac.booksale.vo.CartIDVo" resultMap="shoppingCart">
+        select bookPrice,bookNumber from shopping_cart where cartID=#{cartID};
+    </select>
+
+    <select id="selectSumSale" parameterType="cn.edu.tjrac.booksale.vo.CartIDVo" resultMap="shoppingCart">
+        select bookSale,bookNumber from shopping_cart where cartID= #{cartID}
+    </select>
+
+    <select id="selectCartID" parameterType="Long" resultMap="CartID">
+        select cartID from shopping_cart where userID=#{userID}
+    </select>
+
+    <update id="addNum" parameterType="cn.edu.tjrac.booksale.vo.ShoppingCartVo">
+        update shopping_cart set bookNumber=bookNumber+1 where cartID=#{cartID}
+    </update>
+    <update id="updNum" parameterType="cn.edu.tjrac.booksale.vo.ShoppingCartVo">
+        update shopping_cart set bookNumber=bookNumber-1 where cartID=#{cartID}
+    </update>
+    <delete id="delShopCart" parameterType="cn.edu.tjrac.booksale.vo.ShoppingCartVo">
+        delete from shopping_cart where cartID=#{cartID}
+    </delete>
+    <insert id="insertCart" parameterType="cn.edu.tjrac.booksale.vo.ShoppingCartVo">
+        insert into shopping_cart(
+        cartID,
+        bookID,
+        bookName,
+        bookImage,
+        bookAuthor,
+        bookPrice,
+        bookSale,
+        bookNumber,
+        userID
+        ) values (
+        null,
+        #{bookID},
+        #{bookName},
+        #{bookImage},
+        #{bookAuthor},
+        #{bookPrice},
+        #{bookSale},
+        #{bookNumber},
+        #{userID}
+        )
+    </insert>
+    <delete id="paydelShopCart" parameterType="Long">
+        delete from shopping_cart where userID=#{userID}
+    </delete>
+
+</mapper>

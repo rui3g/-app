@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.tjrac.booksale.dao.MyInfoDao">
+    <resultMap id="orderVo" type="cn.edu.tjrac.booksale.vo.OrderSelectInfoVo">
+        <id property="id" column="id"></id>
+    </resultMap>
+<select id="selectOrder" parameterType="long" resultMap="orderVo">
+    SELECT
+    m.bookName,
+    m.bookImage,
+    m.bookAuthor,
+    o.bookCount,
+    o.id,
+    o.orderStatus,
+    o.saleTime,
+    o.userID,
+    o.sumSale
+    FROM
+    book_message m JOIN book_sale_order o ON o.bookID=m.bookID where o.userID=#{userID}
+</select>
+    <resultMap id="selectAddress" type="cn.edu.tjrac.booksale.vo.MyAddressVo">
+        <id column="id" property="id"></id>
+    </resultMap>
+    <select id="selectMyInfo" parameterType="long" resultMap="selectAddress">
+        Select * from receiving_address where userID=#{userID}
+    </select>
+    <insert id="insertOrder" parameterType="cn.edu.tjrac.booksale.vo.OrderVo">
+        insert into book_sale_order(
+        id,
+        userID,
+        bookID,
+        saleTime,
+        orderStatus,
+        bookCount,
+        sumSale
+        )values (
+        null,
+        #{userID},
+        #{bookID},
+        now(),
+        '未付款',
+        #{bookCount},
+        #{sumSale}
+        )
+    </insert>
+    <update id="updateStatus" parameterType="cn.edu.tjrac.booksale.vo.OrderVo">
+        update book_sale_order set orderStatus='已付款' where id=#{id}
+    </update>
+    <insert id="insertAddress" parameterType="cn.edu.tjrac.booksale.vo.MyAddressVo">
+        insert into receiving_address(
+        id,
+        address,
+        name,
+        tel,
+        userID
+        )values (
+        null,
+        #{address},
+        #{name},
+        #{tel},
+        #{userID}
+        )
+    </insert>
+
+</mapper>
