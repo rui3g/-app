@@ -2,6 +2,7 @@ package cn.edu.tjrac.booksale.controller;
 
 
 import cn.edu.tjrac.booksale.service.BookMessageService;
+import cn.edu.tjrac.booksale.util.CommonRespUtil;
 import cn.edu.tjrac.booksale.util.R;
 import cn.edu.tjrac.booksale.vo.BookMessageVo;
 import com.alibaba.fastjson.JSONObject;
@@ -27,15 +28,20 @@ public class BookMessageController {
     @ApiOperation(value = "查询随机6条数据", notes = "查询", produces = "application/json")
     @RequestMapping(value = "/select", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public List<BookMessageVo> selectbook(){
+    public Object selectbook(){
         List<BookMessageVo> books= bookMessageService.Sixinfo();
-         return books;
+        if (books.size()>0){
+            return CommonRespUtil.returnMsg(CommonRespUtil.SUCCESS,"信息查询成功",books);
+        }else {
+            return CommonRespUtil.returnMsg(CommonRespUtil.FAILED,"没有消息");
+        }
+
     }
 
-    //分类查
+    /**分类查**/
     @ApiOperation(value = "查询分类", notes = "查询", produces = "application/json")
     @RequestMapping("/selectSort")
-    public List<BookMessageVo> selectSortInfo(HttpServletRequest request){
+    public Object selectSortInfo(HttpServletRequest request){
         String Status=request.getParameter("saleStatus");
         String bookSort=request.getParameter("bookSort");
         int saleStatus=Integer.parseInt(Status);
@@ -61,10 +67,10 @@ public class BookMessageController {
             }
         }
 
-        return list;
+        return CommonRespUtil.returnMsg(CommonRespUtil.SUCCESS,"分类查询成功",list);
 
     }
-    //按书名查
+    /**按书名查**/
     @RequestMapping("/selectOne")
     public  BookMessageVo selectOne(HttpServletRequest request){
 
